@@ -1,0 +1,62 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import render, redirect
+
+from accounts.forms import SignUpForm
+
+
+@login_required
+def home(request):
+    return render(request, 'home.html')
+
+
+#
+# def signup(request):
+#     if request.method == 'POST':
+#         form = SignUpForm(request.POST)
+#         if form.is_valid():
+#             first_name = form.cleaned_data['Email']
+#
+#             form.save()
+#             username = form.cleaned_data.get('username')
+#             password = form.cleaned_data.get('password1')
+#             user = authenticate(username=username, password=password)
+#             login(request, user)
+#             return redirect('home')
+#     form = SignUpForm()
+#     return render(request, 'registration/signup.html', {'form': form})
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            messages.success(request, 'SignUp Successfully!')
+            return redirect('home')
+    else:
+        form = SignUpForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+
+class UserLoginView(LoginView):
+    template_name = 'registration/login.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, f'Login Successfully!')
+        return response
+
+
+class UserLogoutView(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            messages.info(request, "You have successfully logged out.")
+        return super().dispatch(request, *args, **kwargs)
