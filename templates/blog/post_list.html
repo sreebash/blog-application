@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    Post List
+{% endblock %}
+
+
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %}
+                    class="alert-danger{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h3>Post List</h3>
+    {% for post in post_list %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row g-0">
+                    <div class="col-md-5">
+                        <div class="ratio ratio-16x9">
+                            {% if post.feature_image %}
+                                <a href="{% url 'blog:post_detail' post.id %}"> <img src="{{ post.image_url }}"
+                                                                                     class="rounded" style="width: 100%"
+                                                                                     alt="{{ post.title }}">
+                                </a>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-7 ps-md-3 pt-3 pt-md-0 d-flex flex-column">
+
+                        <h2 class="card-title h5">
+                            <a href="{% url 'blog:post_detail' post.id %}" style="color: black">
+                                {{ post.title }}
+                            </a>
+                        </h2>
+                        <div class="text-muted">
+                            <small>
+                                Published {{ post.created_at }} by <strong>{{ post.author }}</strong>
+                            </small>
+                        </div>
+
+
+                        <p class="card-text mb-auto py-2" style="color: blueviolet">{{ post.description|safe|striptags|truncatechars:100 }}</p>
+
+
+                        <div>
+                            <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm">Read more</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+
+
+{% endblock %}

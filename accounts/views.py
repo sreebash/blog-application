@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 
@@ -36,11 +37,11 @@ def signup(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, 'SignUp Successfully!')
-            return redirect('home')
+            messages.success(request, 'Your have signup successfully!')
+            return redirect('accounts:home')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -60,3 +61,14 @@ class UserLogoutView(LogoutView):
         if request.user.is_authenticated:
             messages.info(request, "You have successfully logged out.")
         return super().dispatch(request, *args, **kwargs)
+
+
+def user_list(request):
+    users = User.objects.all()
+    return render(request, 'user/user_list.html', {'users': users})
+
+
+def delete_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    user.delete()
+    return redirect('accounts:user_list')

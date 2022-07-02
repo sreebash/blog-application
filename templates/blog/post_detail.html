@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <h2>{{ post.title }}</h2>
+
+    <img src="{{ post.feature_image.url }}" alt="" style="width: 50%"><br>
+    <strong>Description:</strong> {{ post.description }}<br>
+    <strong>Author:</strong> <a href="">{{ post.author }}</a><br>
+    <strong>Created:</strong> <a href="">{{ post.created_at }}</a><br><br>
+    <strong><a href="{% url 'blog:delete_post' post.id%}" style="color: #c90707">Delete Post</a></strong>
+    <hr>
+    {% for comment in comments %}
+        <div class="card" style="padding: 10px;">
+            <div class="font-weight-bold" style="color: darkmagenta">
+                {{ comment.name }}
+                <span class=" text-muted font-weight-normal">
+              {{ comment.created_at }}
+            </span>
+            </div>
+            {{ comment.description | linebreaks }}
+        </div>
+    {% endfor %}
+
+    <div class="card-body">
+        {% if new_comment %}
+            <div class="alert alert-success" role="alert">
+                Your comment is awaiting moderation
+            </div>
+        {% else %}
+            <h3>Leave a comment</h3>
+            {% if user.is_authenticated %}
+                <form method="post" style="margin-top: 1.3em;">
+                    {{ comment_form |crispy }}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                </form>
+            {% else %}
+                <strong>You must be logged in to post a comment</strong> <a href="{% url 'accounts:login' %}">Login</a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+{% endblock %}
