@@ -6,16 +6,16 @@ from django.forms import TextInput
 
 
 class SignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True,
+    first_name = forms.CharField(max_length=30, required=True, help_text='First Name',
                                  widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
-    last_name = forms.CharField(max_length=30, required=True,
+    last_name = forms.CharField(max_length=30, required=True, help_text='Last Name',
                                 widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
-    username = forms.CharField(max_length=50, required=True,
+    username = forms.CharField(max_length=50, required=True, help_text='Username',
                                widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
-    email = forms.EmailField(max_length=255, widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
-    password1 = forms.Field(
+    email = forms.EmailField(max_length=255, help_text='Email', widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
+    password1 = forms.Field(help_text='Password',
         widget=forms.PasswordInput(attrs={'class': "form-control", 'placeholder': 'Password'}))
-    password2 = forms.Field(
+    password2 = forms.Field(help_text='Retype Password',
         widget=forms.PasswordInput(attrs={'class': "form-control", 'placeholder': 'Confirm Password'}))
 
     class Meta:
