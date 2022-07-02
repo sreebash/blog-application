@@ -7,13 +7,16 @@
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
-                        {{ field.help_text }}
+                    {{ field.help_text }}
 
-                        {{ field }}
 
-                        {% for error in field.errors %}
-                            <p style="color: red">{{ error }}</p>
-                        {% endfor %}
+                    {{ field }}
+
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+
+
                 {% endfor %}
                 <button type="submit" class="btn btn-primary btn-sm">Sign up</button>
             </form>
