@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 
-from accounts.forms import SignUpForm
+from accounts.forms import SignUpForm, LoginForm
 
 
 @login_required
@@ -32,6 +32,7 @@ def signup(request):
 
 class UserLoginView(LoginView):
     template_name = 'registration/login.html'
+    form_class = LoginForm
 
     def form_valid(self, form):
         response = super().form_valid(form)

@@ -1,5 +1,15 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Post
+
+
+class PostCreateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'description', 'feature_image')
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Post Title'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Post Description here'})
+        }
 
 
 class CommentForm(forms.ModelForm):

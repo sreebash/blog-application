@@ -3,7 +3,7 @@
 {% block content %}
     <div class="signup-container">
         <h3>Sign up</h3>
-        <div class="card" style="width: 335px">
+        <div>
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}

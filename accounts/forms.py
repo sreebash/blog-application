@@ -1,5 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import TextInput
@@ -55,3 +56,14 @@ class SignUpForm(UserCreationForm):
         if original_password != confirm_password:
             raise forms.ValidationError("Password didn't match!")
         return confirm_password
+
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['username'].widget.attrs.update({
+            'placeholder': 'Username', 'class': 'form-control'})
+        self.fields['password'].widget.attrs.update({
+            'placeholder': 'Password', 'class': 'form-control'
+        })

@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, ListView, DetailView
 
-from blog.forms import CommentForm
+from blog.forms import CommentForm, PostCreateForm
 from blog.models import Post
 
 
@@ -17,7 +17,7 @@ class PostListView(ListView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'description', 'feature_image']
+    form_class = PostCreateForm
 
     def get_success_url(self):
         messages.success(
