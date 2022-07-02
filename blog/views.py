@@ -60,5 +60,7 @@ def delete_post(request, post_id):
     print(post)
     if request.user == post.author:
         post.delete()
+        messages.warning(request, 'Post deleted successfully.')
         return redirect('blog:post_list')
+
     return redirect('blog:post_list')

@@ -24,7 +24,7 @@ def signup(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, 'Your have signup successfully!')
-            return redirect('accounts:home')
+            return redirect('accounts:login')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -54,4 +54,5 @@ def user_list(request):
 def delete_user(request, user_id):
     user = User.objects.get(id=user_id)
     user.delete()
+    messages.warning(request, 'User deleted successfully!')
     return redirect('accounts:user_list')

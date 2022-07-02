@@ -8,14 +8,8 @@
 
 
 {% block content %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %}
-                    class="alert-danger{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {% include "success_message.html" %}
+
 
     <h3>Post List</h3>
     {% for post in post_list %}
@@ -48,7 +42,8 @@
                         </div>
 
 
-                        <p class="card-text mb-auto py-2" style="color: blueviolet">{{ post.description|safe|striptags|truncatechars:100 }}</p>
+                        <p class="card-text mb-auto py-2"
+                           style="color: blueviolet">{{ post.description|safe|striptags|truncatechars:100 }}</p>
 
 
                         <div>
